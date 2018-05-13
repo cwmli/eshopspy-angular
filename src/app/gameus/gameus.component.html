@@ -11,7 +11,7 @@
         [class.white]="filterSale">Filter ON SALE</div>
   </div>
   <div class="cf pa2">
-      <div class="fl w-20 w-50-s w-20-l pa3" *ngFor="let uscart of uscarts ">
+      <div class="fl w-50 w-20-m w-20-l pa3" *ngFor="let uscart of uscarts ">
           <a routerLink="/gameus/detail/{{uscart.nsuid}}" [queryParams]="{offset: paginationOffset, sale: filterSale}" class="db link grow black-80 tc">
             <img class="br4 h4 w4 pa1 ba b--black-10" 
                 data-src="{{ uscart.front_box_art }}" 
