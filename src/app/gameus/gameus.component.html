@@ -1,0 +1,71 @@
+<div class="vh-100 dt w-100 sans-serif" *ngIf="loading">
+  <div class="dtc v-mid tc white ph3 ph4-l">
+    <h1 class="f6 f2-m black f-subheadline-l fw6 tc">Retrieving...</h1>
+  </div>
+</div>
+<div class="w-100 pt6 sans-serif" *ngIf="!loading">
+  <div class="flex items-center justify-center pa3">
+    <div class="f6 link dim ph3 pv2 mb2 br1 dib pointer" 
+        (click)="filterSale = !filterSale;paginationOffset = 0;getUSCarts(paginationOffset)"
+        [class.bg-light-red]="filterSale"
+        [class.white]="filterSale">Filter ON SALE</div>
+  </div>
+  <div class="cf pa2" *ngFor="let uscartgroup of uscarts">
+      <div class="fl w-20 w-20-l pa3" *ngFor="let uscart of uscartgroup ">
+          <a routerLink="/gameus/detail/{{uscart.nsuid}}" [queryParams]="{offset: paginationOffset, sale: filterSale}" class="db link grow black-80 tc">
+            <img class="br4 h4 w4 pa1 ba b--black-10" 
+                data-src="{{ uscart.front_box_art }}" 
+                alt="{{ uscart.title }}"
+                lazy-load-images>
+            <dl class="ph2 ph0-ns pb3 db">
+              <h3 class="f5 mb0 light-red">{{ uscart.title }}</h3>
+              <h3 class="f7 mb0 black-90">Release Date: {{ uscart.release_date }}</h3>
+              <span *ngIf="!uscart.free_to_start && validateDate(uscart.release_date)">
+                <h3 class="f7 mb0 black-60">
+                    Price (USD):
+                    <span *ngIf="uscart.sale_price">
+                      <s>{{ uscart.usd_price }}</s>
+                      <span class="bg-light-yellow">{{ uscart.sale_price }}</span>
+                      <span class="f7 ph1 bg-light-gray br-pill">
+                          {{ convertRate('USD', 'CAD', uscart.sale_price) }} CAD
+                      </span>
+                    </span>
+                    <span *ngIf="!uscart.sale_price">
+                      {{ uscart.usd_price }}
+                      <span class="f7 ph1 bg-light-gray br-pill">
+                          {{ convertRate('USD', 'CAD', uscart.usd_price) }} CAD
+                      </span>
+                    </span>
+                  </h3>
+                <h3 class="f7 mb0 black-60">
+                    Price (CAD):
+                    <span *ngIf="uscart.sale_price">
+                      <s>{{ uscart.cad_price }}</s>
+                      <span class="bg-light-yellow">{{ ca_sale_prices[uscart.nsuid] ? ca_sale_prices[uscart.nsuid].sale : 'NaN' }}</span>
+                    </span>
+                    <span *ngIf="!uscart.sale_price">
+                      {{ uscart.cad_price }}
+                    </span>
+                  </h3>
+              </span>
+            </dl>
+          </a>
+        </div>
+      </div>
+      <div class="flex items-center justify-center pa2 sans-serif bg-near-white">
+        <div (click)="paginateBack()" class="f5 no-underline orange hover-light-red inline-flex items-center pa3 mr4 pointer">
+          <svg class="w1" data-icon="chevronLeft" viewBox="0 0 32 32" style="fill:currentcolor">
+            <title>chevronLeft icon</title>
+            <path d="M20 1 L24 5 L14 16 L24 27 L20 31 L6 16 z"></path>
+          </svg>
+          <span class="pl1">Previous</span>
+        </div>
+        <div (click)="paginateNext()" class="f5 no-underline orange hover-light-red inline-flex items-center pa3 pointer">
+          <span class="pr1">Next</span>
+          <svg class="w1" data-icon="chevronRight" viewBox="0 0 32 32" style="fill:currentcolor">
+            <title>chevronRight icon</title>
+            <path d="M12 1 L26 16 L12 31 L8 27 L18 16 L8 5 z"></path>
+          </svg>
+        </div>
+      </div>
+  </div>
