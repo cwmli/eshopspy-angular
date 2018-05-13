@@ -13,12 +13,11 @@ import { element } from 'protractor';
 })
 export class GameusComponent implements OnInit {
 
-  private groupings = 5;
   private exchange: ExchangeCart;
   
   filterSale = false;
   paginationOffset = 0;
-  uscarts: USCart[][];
+  uscarts: USCart[];
   ca_sale_prices = {}
   nsuids: string[];
 
@@ -27,7 +26,7 @@ export class GameusComponent implements OnInit {
   constructor(private eshopService: EshopService,
               private location: Location,
               private route: ActivatedRoute) { 
-    this.uscarts = [[]];
+    this.uscarts = [];
   }
 
   ngOnInit() {
@@ -60,7 +59,7 @@ export class GameusComponent implements OnInit {
   }
 
   getUSCarts(offset: string): void {
-    this.uscarts = [[]];
+    this.uscarts = [];
     this.nsuids = [];
     this.loading = true;
     this.eshopService.getUSCarts('50', offset, this.filterSale).subscribe(data => {
@@ -87,11 +86,7 @@ export class GameusComponent implements OnInit {
           cart.sale_price = element.sale_price;
         }
 
-        if (this.uscarts[groupIndex].length == this.groupings) {
-          groupIndex++;
-          this.uscarts[groupIndex] = [];
-        }
-        this.uscarts[groupIndex].push(cart);
+        this.uscarts.push(cart);
       });
     },
     error => console.log(error),
