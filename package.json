@@ -5,8 +5,8 @@
   "scripts": {
     "ng": "ng",
     "config": "ts-node ./src/set-env.ts",
-    "start": "npm run config -- --environment=dev && ng serve --environment=dev",
-    "build": "npm run config -- --environment=prod && ng build --environment=prod",
+    "start": "webpack-dev-server --port=4200",
+    "build": "webpack",
     "test": "karma start ./karma.conf.js",
     "lint": "ng lint",
     "e2e": "protractor ./protractor.conf.js",
